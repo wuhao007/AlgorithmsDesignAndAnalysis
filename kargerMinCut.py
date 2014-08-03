@@ -78,7 +78,6 @@ def _kargerMinCut(graph, seed):
 
     # Two vertices remain
     return len(graph.adj_vertices[0])
-    
 
 def kargerMinCut(graph, N):
     '''
@@ -91,20 +90,16 @@ def kargerMinCut(graph, N):
     For high success probability (1/n failure chance),
     use N = n^2 * log(n).
     '''
-    
-    i = 0
-    
     # (!) Working with the copy of the graph,
     # not destroying the original one
-    min_res = _kargerMinCut(graph.copy(), i)
-    while i < N:
+    min_res = _kargerMinCut(graph.copy(), 0)
+    for i in range(int(N)):
         t = _kargerMinCut(graph.copy(), i)
         print(str(i)+': '+str(t))
-        if t < min_res: min_res = t
-        i += 1
+        if t < min_res: 
+            min_res = t
         
     return min_res
-
 
 def main():
     
@@ -130,4 +125,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
