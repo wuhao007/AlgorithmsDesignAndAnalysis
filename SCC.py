@@ -19,8 +19,7 @@ def readDirectedGraph(filename):
     adjlist = []
     adjlist_reversed = []
     
-    line = f.readline()
-    while line != '':
+    for line in f.readlines():
         num1, num2 = line.split()
         v_from = int(num1)
         v_to = int(num2)
@@ -33,9 +32,9 @@ def readDirectedGraph(filename):
             
         adjlist[v_from-1].append(v_to-1)
         adjlist_reversed[v_to-1].append(v_from-1)
-        
-        line = f.readline()
-            
+    
+    f.close()
+
     return adjlist, adjlist_reversed
 
 
@@ -46,18 +45,18 @@ leader = None
 scc_size = 0
 sorted_by_finish_time = None
 
-def DFS_Loop_1(graph_rev, n):
+def DFS_Loop_1(graph_rev):
     
     global t, explored, sorted_by_finish_time
-    
+
+    n = len(graph)
     t = 0
     explored = [False]*n
     sorted_by_finish_time = [None]*n
     
-    for i in reversed(range(n)):
+    for i in range(n-1, -1, -1):
         if not explored[i]:
             DFS_1(graph_rev, i)
-                        
             
 def DFS_1(graph_rev, i):
     
@@ -77,16 +76,19 @@ def DFS_Loop_2(graph):
     
     global scc_size, explored, sorted_by_finish_time
     
-    explored = [False]*len(graph)
+    n = len(graph)
+
+    explored = [False]*n
     res = []
     
-    for i in reversed(range(len(graph))):
-        if not explored[sorted_by_finish_time[i]]:
+    for i in range(n-1, -1, -1):
+        m = sorted_by_finish_time[i]
+	if not explored[m]:
             scc_size = 0
             # Here we collect all the members
             # of the next SCC using DFS.
             # scc_size is incremented inside DFS.
-            DFS_2(graph, sorted_by_finish_time[i])
+            DFS_2(graph, m)
             res.append(scc_size)
             
     return res
@@ -107,7 +109,7 @@ def DFS_2(graph, i):
 
 def kosarajuSCCsizes(graph, graph_rev):
     
-    DFS_Loop_1(graph_rev, len(graph))
+    DFS_Loop_1(graph_rev)
     res = DFS_Loop_2(graph)
     
     return res
