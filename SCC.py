@@ -49,7 +49,7 @@ def DFS_Loop_1(graph_rev):
     
     global t, explored, sorted_by_finish_time
 
-    n = len(graph)
+    n = len(graph_rev)
     t = 0
     explored = [False]*n
     sorted_by_finish_time = [None]*n
